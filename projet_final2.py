@@ -40,20 +40,6 @@ def Display(variable,start_date,end_date):
     plt.plot(temps,var,'-',color='black', label=variable)
     plt.xlabel('Temps')
     plt.ylabel(variable)
-    (xmin, xmax, ymin, ymax)=plt.axis()
-    
-    x,inconfort1=p.ligne(x,15)                                  # On rajoute les seuils d'inconfort
-    x,inconfort2=p.ligne(x,30)
-    
-    if ymax>30 and ymin<15:
-        plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white')     
-    else:
-        if ymax>30:
-            plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        if ymin<15:
-            plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-    
     plt.legend(bbox_to_anchor=(0.75, 1), loc='upper left', borderaxespad=0.)
 
     if start_date==end_date:
@@ -222,20 +208,6 @@ def DisplayStat(variable,start_date,end_date):
     plt.plot(temps,Maxi,'-',color='red', label="maximum")
     plt.plot(temps,Moy,'-',color='green', label="moyenne")
     """plt.plot(temps,Med,'-',color='yellow', label="mediane")"""
-    (xmin, xmax, ymin, ymax)=plt.axis()
-    
-    x,inconfort1=p.ligne(x,15)                                  # On rajoute les seuils d'inconfort
-    x,inconfort2=p.ligne(x,30)
-    
-    if ymax>30 and ymin<15:
-        plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white')     
-    else:
-        if ymax>30:
-            plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        if ymin<15:
-            plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-    
     plt.legend(bbox_to_anchor=(0.75, 1), loc='upper left', borderaxespad=0.)
 
     if start_date==end_date:
@@ -352,19 +324,8 @@ def corrélation(variable1,variable2,start_date,end_date):
     plt.plot(temps,var2,'-',color='blue', label=variable2)
     plt.xlabel('Temps')
     plt.ylabel(variable1+" et "+variable2)
-    (xmin, xmax, ymin, ymax)=plt.axis()
-    
-    x,inconfort1=p.ligne(x,15)                                  # On rajoute les seuils d'inconfort
-    x,inconfort2=p.ligne(x,30)
-    
-    if ymax>30 and ymin<15:
-        plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white')     
-    else:
-        if ymax>30:
-            plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        if ymin<15:
-            plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
+       
+   
     
     plt.legend(bbox_to_anchor=(0.75, 1), loc='upper left', borderaxespad=0.)
 
@@ -474,7 +435,7 @@ def Afficher_anomalies(variable,start_date,end_date):
     doc1 = doc.set_index(['date'])            #réindexation par la date
 
     doc1=doc1.loc[start_date : end_date]         #Création d'un nouveau document filtré par les dates de début et de fin choisies
-
+    variable1=' '
 
 #Choix de la variable
     
@@ -506,19 +467,6 @@ def Afficher_anomalies(variable,start_date,end_date):
     plt.xlabel('Temps')
     plt.ylabel(variable)
     plt.scatter(L,l,color='red', label='anomalie')
-    (xmin, xmax, ymin, ymax)=plt.axis()
-    x,inconfort1=p.ligne(x,15)                                  # On rajoute les seuils d'inconfort
-    x,inconfort2=p.ligne(x,30)
-    
-    if ymax>30 and ymin<15:
-        plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white')     
-    else:
-        if ymax>30:
-            plt.fill_between(x,inconfort2,p.ligne(x,ymax)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-        if ymin<15:
-            plt.fill_between(x,inconfort1,p.ligne(x,ymin)[1],hatch="///",edgecolor="r",facecolor='white',label="Zone d'inconfort")     
-    
     plt.legend(bbox_to_anchor=(0.75, 1), loc='upper left', borderaxespad=0.)
 
     if start_date==end_date:

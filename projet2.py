@@ -1,12 +1,12 @@
-import fonctions as f
-import projet1_final as p
-import matplotlib.pyplot as plt
+import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.dates as dt
+import datetime
+import projet_final2 as p
 from matplotlib.ticker import MultipleLocator, FormatStrFormatter
 
 import sys
-
-
 
     # Exit
 
@@ -17,11 +17,20 @@ def sortir(message='Exit'):
     print("____________________________________________________________________________________\n\n\n")
     return sys.exit()
 
+  # Fonction pour vérifier la date
 
-    # Fonction pour vérifier la date
+def completer_date(d,max):        # n est la longueur de la liste réelle et max la lonngueur voulue
+    n=len(d)
+    if n<10:
+        m=10-n
+        X=''
+        for k in range(m):
+            X+='0'
+        d=d+X
+    return d
 
 def bonne_date(date,endroit):
-    date=p.completer_date(date,10)
+    date=completer_date(date,10)
     annee,mois,jour,tiret1,tiret2=date[:4],date[5:7],date[8:10],date[4],date[7]
     while type(date)!=str or len(date)!=10 or int(annee)!=2019 or int(mois)!=8 or int(jour)>21 or int(jour)<11 or tiret1!='-' or tiret2!='-':
         print("La date de "+endroit+" n'est pas sous la bonne forme, est incomplète ou n'est pas comprise dans la bonne plage")
@@ -32,6 +41,17 @@ def bonne_date(date,endroit):
             sortir()
     return date
 
+def completer_date(d,max):        # n est la longueur de la liste réelle et max la lonngueur voulue
+    n=len(d)
+    if n<10:
+        m=10-n
+        X=''
+        for k in range(m):
+            X+='0'
+        d=d+X
+    return d
+
+
 
 
 #____________________________________________________________
@@ -41,7 +61,7 @@ def bonne_date(date,endroit):
 # Ecrire sous la forme : python MONSCRIPT.py <action> <var> <start_date> <end_date>
 
 print("Ce script permet d'effectuer une action pour une variable en fonction du temps sur la plage voulue \n(sans les dates précisées, la plage sera automatiquement prise entre le '2019-08-11' et le '2019-08-25')\n")
-print("Pour cela, veuillez écrire sous la forme : \n   python projet.py <action> <variable> <date de début> <date de fin>")
+print("Pour cela, veuillez écrire sous la forme : \n   python projet.py <action> <variable> <date de début> <date de début>")
 print("En cas de bug, pour quitter le programme, tapez 'sortir'\n")
 
 
@@ -55,7 +75,8 @@ print("En cas de bug, pour quitter le programme, tapez 'sortir'\n")
 try:
     action=sys.argv[1]
 except Exception:
-    sortir("Il manque une action")
+    print("Il manque une action")
+    sortir()
 
 
     # On défini la liste d'action qui existe (Ainsi, on poura en rajouter ou en enlever)
@@ -176,7 +197,8 @@ if action!='Corrélation':
     try:
         var=sys.argv[2]
     except Exception:
-        sortir("Il manque une variable")
+        print("Il manque une variable")
+        sortir()
     var=def_var(var)
     k=3                         # k est l'indice de la prochaine variable à entrer dans le cmd
 
@@ -185,12 +207,14 @@ else:
     try:
         var1=sys.argv[2]
     except Exception:
-        sortir("Il manque un couple de variable")
+        print("Il manque un couple de variable")
+        sortir()
     var1=def_var(var1)
     try:
         var2=sys.argv[3]
     except Exception:
-        sortir("Il manque la seconde variable")
+        print("Il manque la seconde variable")
+        sortir()
     var2=def_var(var2)
     k=4
     
@@ -297,47 +321,41 @@ else:
 print("entre le "+start_date+" et le "+end_date+"\n")  
 
 
-entrer=input("Tapez 1, pour voir les anomalies\nSinon, press 'entrer' pour continuer\n     ")      
-    # Ceci permet d'afficher les messages avant de charger les courbes
+entrer=input("Press 'entrer' to continu\n")      # Ceci permet d'afficher les messages avant les courbes
 if entrer=='sortir':
     sortir()
 
 
 
-if k==1:        # Ici, on affiche une courbe
-    if entrer!='1':         # Sans les anomalies
-        if var=='Carbone':
-            p.Afficher_carbone(start_date,end_date)
-        elif var=='Température':
-            p.Afficher_temperature(start_date,end_date)
-        elif var=='Luminosité':
-            p.Afficher_luminosite(start_date,end_date)
-        elif var=='Bruit':
-            p.Afficher_bruit(start_date,end_date)
-        elif var=='Humidité':
-            p.Afficher_humidite(start_date,end_date)
-        elif var=='Humidex':
-            temp=p.donnee.temp.tolist()
-            hum=p.donnee.humidity.tolist()
-            humidex=p.humidex(temp,hum,start_date,end_date)
-            p.Afficher_humidex(humidex,start_date,end_date)
-    else:               # Affichage des courbes avec anomalies
-        p.Afficher_colonne_avec_anomalie_n(var,start_date,end_date)
+if k==1:        # On affiche une courbe
+    if var=='Carbone':
+        p.Display('carbone',start_date,end_date)
+    elif var=='Température':
+        p.Display('temperature',start_date,end_date)
+    elif var=='Luminosité':
+        p.Display('luminosite',start_date,end_date)
+    elif var=='Bruit':
+        p.Display('bruit',start_date,end_date)
+    elif var=='Humidité':
+        p.Display('humidity',start_date,end_date)
+    elif var=='Humidex':
+        p.Display('humidex',start_date,end_date)    
         
-    
-elif k==2:        # Ici, on affiche une courbe avec les valeurs statistiques : min, max, écart-type, moyenne, variance, médiane
-    p.Afficher_stat(var,start_date,end_date,entrer=='1')
-    
-    
-elif k==3:       # Ici, on affiche une courbe avec les deux variables avec leur indice de corrélation
-    # On récupère la colonne de la variable
-    col1=p.recup(var1)
-    col2=p.recup(var2)
-        
-    corr=f.correlation(col1,col2)
 
-    print("\nL'indice de corrélation entre "+var1+" et "+var2+" sur toute la période vaut :\n          "+str(corr))
-    p.Afficher_correlation(var1,var2,start_date,end_date,entrer=='1')
+
+        
+elif k==2:        # On affiche une courbe avec les valeurs statistiques : min, max, écart-type, moyenne, variance, médiane
+
+    p.DisplayStat(var,start_date,end_date)
+
+
+elif k==3:       # On affiche une courbe avec les deux variables avec leur indice de corrélation
+    # On récupère la colonne de la variable
+    p.DisplayStat(var,start_date,end_date)
+
+
+
+p.Afficher_anomalies(var,start_date,end_date)       #Détection d'anomalies
 
 
 
