@@ -572,10 +572,7 @@ def Afficher_stat(col,doc,start_date='2019-08-11',end_date='2019-08-25',anomalie
     ax.xaxis.set_minor_locator(minorLocator)
     
     if anomalie:
-        if j-i==len(donnee) and col!='Humidex':
-            appeler_anomalie2(x,y,col,doc)
-        else:
-            appeler_anomalie(x,y)
+        appeler_anomalie2(x,y,col,doc)
     
     plt.xlabel('Temps (h)')
     plt.ylabel(str(col)+" (en "+str(unite(col))+")")
@@ -720,11 +717,10 @@ def Afficher_correlation(col1,col2,doc,start_date,end_date,anomalie=False):     
     ax.set_ylabel(str(col1)+" (en "+str(unite(col1))+")", color='tab:green')
     ax.plot(x, y, color='tab:green')
     ax.tick_params(axis='y', labelcolor='tab:green')
+
     if anomalie:
-        if j-i==len(donnee):
-            appeler_anomalie2(x,y,col1,doc)
-        else:
-            appeler_anomalie(x,y)
+        appeler_anomalie2(x,y,col1,doc)
+
     
     ax.xaxis.set_major_locator(majorLocator)
     ax.xaxis.set_major_formatter(majorFormatter)
@@ -737,10 +733,8 @@ def Afficher_correlation(col1,col2,doc,start_date,end_date,anomalie=False):     
     ax2.tick_params(axis='y', labelcolor='tab:blue')
     
     if anomalie:
-        if j-i==len(donnee):
-            appeler_anomalie2(x,y2,col2,doc)
-        else:
-            appeler_anomalie(x,y2)
+        appeler_anomalie2(x,y2,col2,doc)
+
     
     indice="{0:.2f}".format(f.correlation(y,y2))
     if anomalie:
@@ -1030,5 +1024,5 @@ def appeler_anomalie2(x,y,col,doc):
         k,j,i=anomalie_list_n(y,x,p)
         plt.scatter(i,j,marker='o',color='red',zorder=p,s=(p+1)**2)
     j,i=interQ_detect(doc,col)
-    plt.scatter(i,j,marker='o',color='green',label="anomalie2",zorder=2,s=3**2)
+    plt.scatter(i,j,marker='o',color='purple',label="anomalie2",zorder=2,s=3**2)
     return None
